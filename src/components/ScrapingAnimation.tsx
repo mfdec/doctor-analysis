@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Loader2, Shield, FileSearch, Database, MessageSquare } from 'lucide-react';
+import { Loader2, Globe, Database, FileSearch, Shield } from 'lucide-react';
 import { SCRAPING_STEPS } from '../utils/doctorAnalysis';
 
 interface ScrapingAnimationProps {
@@ -34,17 +34,10 @@ export default function ScrapingAnimation({ doctorName, medication }: ScrapingAn
 
   const getSourceIcon = (step: string) => {
     if (step.includes('CPSO') || step.includes('College') || step.includes('Health Canada')) return <Shield className="w-4 h-4 text-green-400" />;
-    if (step.includes('RateMDs') || step.includes('Healthgrades') || step.includes('directories')) return <FileSearch className="w-4 h-4 text-blue-400" />;
-    if (step.includes('Reddit') || step.includes('community') || step.includes('forums')) return <MessageSquare className="w-4 h-4 text-orange-400" />;
+    if (step.includes('RateMDs') || step.includes('Healthgrades')) return <FileSearch className="w-4 h-4 text-blue-400" />;
+    if (step.includes('Reddit') || step.includes('community')) return <Globe className="w-4 h-4 text-orange-400" />;
     return <Database className="w-4 h-4 text-purple-400" />;
   };
-
-  const databases = [
-    { name: 'CPSO Registry', icon: <Shield className="w-5 h-5 text-green-400" /> },
-    { name: 'Patient Reviews DB', icon: <FileSearch className="w-5 h-5 text-blue-400" /> },
-    { name: 'Prescribing Patterns', icon: <Database className="w-5 h-5 text-purple-400" /> },
-    { name: 'Community Forums', icon: <MessageSquare className="w-5 h-5 text-orange-400" /> },
-  ];
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
@@ -55,7 +48,7 @@ export default function ScrapingAnimation({ doctorName, medication }: ScrapingAn
         </div>
         <h2 className="text-2xl font-bold text-white">Analyzing Doctor Profile</h2>
         <p className="text-slate-400">
-          Searching local database for <span className="text-blue-300 font-medium">Dr. {doctorName}</span> • 
+          Searching for <span className="text-blue-300 font-medium">Dr. {doctorName}</span> • 
           Medication: <span className="text-purple-300 font-medium">{medication}</span>
         </p>
       </div>
@@ -63,7 +56,7 @@ export default function ScrapingAnimation({ doctorName, medication }: ScrapingAn
       {/* Progress Bar */}
       <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
         <div className="flex justify-between items-center text-sm">
-          <span className="text-slate-400">Analysis progress</span>
+          <span className="text-slate-400">Scraping progress</span>
           <span className="text-blue-300 font-mono">{Math.round(progress)}%</span>
         </div>
         <div className="h-2 bg-white/10 rounded-full overflow-hidden">
@@ -101,11 +94,11 @@ export default function ScrapingAnimation({ doctorName, medication }: ScrapingAn
         </div>
       </div>
 
-      {/* Databases being queried */}
+      {/* Sources being searched */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {databases.map((db, i) => (
+        {['CPSO Registry', 'RateMDs', 'Healthgrades', 'Reddit'].map((source, i) => (
           <div 
-            key={db.name}
+            key={source}
             className={`bg-white/5 border rounded-xl p-3 text-center transition-all duration-500 ${
               completedSteps.length > i * 2 
                 ? 'border-green-500/30 bg-green-500/5' 
@@ -121,7 +114,7 @@ export default function ScrapingAnimation({ doctorName, medication }: ScrapingAn
                 <Loader2 className="w-5 h-5 text-blue-400 mx-auto animate-spin" />
               )}
             </div>
-            <p className="text-xs text-slate-400">{db.name}</p>
+            <p className="text-xs text-slate-400">{source}</p>
           </div>
         ))}
       </div>

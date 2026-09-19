@@ -1,7 +1,7 @@
 import { 
-  ArrowLeft, MapPin, Star, Clock, Shield, 
+  ArrowLeft, MapPin, Star, Clock, Shield, ExternalLink, 
   TrendingUp, TrendingDown, Minus, AlertTriangle,
-  FileText, MessageSquare, Globe, Database, BookOpen
+  FileText, MessageSquare, Globe, Database
 } from 'lucide-react';
 import { DoctorResult, Source } from '../utils/doctorAnalysis';
 
@@ -163,11 +163,11 @@ export default function Results({ result, onReset }: ResultsProps) {
               <div className="flex-shrink-0 mt-0.5">
                 {getFactorIcon(factor.impact)}
               </div>
-              <div className="flex-1">
+              <div>
                 <h4 className="font-medium text-white text-sm">{factor.name}</h4>
                 <p className="text-xs text-slate-400 mt-1">{factor.description}</p>
               </div>
-              <div className="flex-shrink-0">
+              <div className="ml-auto flex-shrink-0">
                 <span className={`text-xs px-2 py-0.5 rounded-full ${
                   factor.impact === 'positive' ? 'bg-green-500/20 text-green-400' :
                   factor.impact === 'negative' ? 'bg-red-500/20 text-red-400' :
@@ -184,24 +184,32 @@ export default function Results({ result, onReset }: ResultsProps) {
       {/* Sources */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm">
         <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-green-400" />
-          Data Sources Referenced ({result.sources.length})
+          <Globe className="w-5 h-5 text-green-400" />
+          Sources Found ({result.sources.length})
         </h3>
         <div className="space-y-3">
           {result.sources.map((source, index) => (
-            <div key={index} className="bg-white/5 rounded-xl p-4 border border-white/5">
+            <div key={index} className="bg-white/5 rounded-xl p-4 border border-white/5 hover:border-white/10 transition-colors">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 mt-0.5">
                   {getSourceIcon(source.type)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h4 className="font-medium text-white text-sm">{source.name}</h4>
+                    <h4 className="font-medium text-white text-sm truncate">{source.name}</h4>
                     <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-slate-400 capitalize">
                       {source.type}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">{source.snippet}</p>
+                  <p className="text-xs text-slate-400 mt-1 line-clamp-2">{source.snippet}</p>
+                  <a 
+                    href={source.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 mt-2 transition-colors"
+                  >
+                    Visit source <ExternalLink className="w-3 h-3" />
+                  </a>
                 </div>
               </div>
             </div>

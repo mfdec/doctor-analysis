@@ -111,7 +111,7 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
         </button>
 
         <p className="text-center text-xs text-slate-500">
-          Queries local databases: CPSO registry, patient reviews, prescribing patterns & community data
+          Searches CPSO registry, patient reviews, health directories & community forums
         </p>
       </div>
     </form>
