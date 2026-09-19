@@ -67,13 +67,21 @@ console.log(`   Platform: ${platform}\n`);
 
 try {
   // Use npx to run electron-builder with the config
-  const builderCmd = `npx electron-builder --config electron-builder.json --${getPlatformFlag(platform)}`;
-  execSync(builderCmd, { stdio: 'inherit' });
+  // Use 'node node_modules/.bin/electron-builder' for better Windows compatibility
+  const electronBuilderPath = path.join(__dirname, 'node_modules', '.bin', 'electron-builder');
+  const builderCmd = process.platform === 'win32' 
+    ? `node "${electronBuilderPath}" --config electron-builder.json --${getPlatformFlag(platform)}`
+    : `npx electron-builder --config electron-builder.json --${getPlatformFlag(platform)}`;
+  
+  execSync(builderCmd, { stdio: 'inherit', cwd: __dirname });
   console.log('\n✅ Desktop build complete!');
   console.log('📂 Output directory: ./release/\n');
 } catch (error) {
   console.error('\n❌ Desktop build failed');
   console.error('Make sure you have run: npm install');
+  console.error('\nTry running commands separately in PowerShell:');
+  console.error('  npm install');
+  console.error('  node build-desktop.js');
   process.exit(1);
 }
 
